@@ -37,8 +37,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "创建桌面快捷方式"; GroupDescription: "附加任务："
-Name: "associations"; Description: "关联压缩包格式（ZIP、7Z、TAR 等，仅当前用户）"; GroupDescription: "系统集成："
-Name: "contextmenu"; Description: "添加资源管理器右键菜单"; GroupDescription: "系统集成："
+Name: "associations"; Description: "关联压缩包格式（ZIP、7Z、TAR 等，仅当前用户）"; GroupDescription: "系统集成："; Flags: unchecked
+Name: "contextmenu"; Description: "添加资源管理器右键菜单"; GroupDescription: "系统集成："; Flags: unchecked
 
 [Files]
 Source: "{#MySourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
