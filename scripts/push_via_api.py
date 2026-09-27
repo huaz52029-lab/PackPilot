@@ -13,7 +13,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from app.version import REPO_NAME, REPO_OWNER  # noqa: E402
+from app.version import REPO_NAME, REPO_OWNER
 
 
 def git(*args: str, binary: bool = False):
