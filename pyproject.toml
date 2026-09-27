@@ -1,0 +1,90 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "packpilot"
+description = "Windows 轻量级压缩包管理器，支持 ZIP、7Z、TAR、批量操作、密码保护、分卷、压缩包测试和 Windows 系统集成。"
+readme = "README.md"
+requires-python = ">=3.13"
+license = { text = "MIT" }
+authors = [{ name = "PackPilot contributors" }]
+keywords = ["archive", "zip", "7z", "tar", "windows", "pyside6"]
+dependencies = [
+    "PySide6>=6.7",
+    "py7zr>=1.0",
+]
+dynamic = ["version"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Win32 (MS Windows)",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows :: Windows 11",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: System :: Archiving :: Compression",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-qt>=4.4",
+    "ruff>=0.6",
+    "pyinstaller>=6.6",
+]
+
+[project.scripts]
+packpilot = "app.cli.commands:main"
+
+[project.gui-scripts]
+packpilot-window = "app.main:main"
+
+[project.urls]
+Homepage = "https://github.com/huaz52029-lab/PackPilot"
+Issues = "https://github.com/huaz52029-lab/PackPilot/issues"
+
+[tool.setuptools]
+packages = [
+    "app",
+    "app.cli",
+    "app.core",
+    "app.gui",
+    "app.gui.dialogs",
+    "app.gui.widgets",
+    "app.services",
+    "app.tasks",
+    "app.windows",
+]
+
+[tool.setuptools.dynamic]
+version = { attr = "app.version.__version__" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+qt_api = "pyside6"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py313"
+extend-exclude = ["build", "dist", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4", "SIM", "RUF"]
+ignore = [
+    "E501",
+    "B008",
+    "RUF001",
+    "RUF002",
+    "RUF003",
+    # str + Enum 组合用于让枚举值直接参与 JSON/注册表序列化，属有意设计
+    "UP042",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["B011"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

@@ -1,0 +1,47 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyd
+*.egg-info/
+.eggs/
+
+# --- 虚拟环境 ---
+.venv/
+venv/
+env/
+
+# --- 测试与检查缓存 ---
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- 打包产物 ---
+build/
+dist/
+*.spec.bak
+*.manifest
+
+# --- 本地配置 / 日志 / 临时数据 ---
+*.log
+logs/
+local_settings.json
+settings.local.json
+.packpilot-local/
+
+# --- 编辑器 / 操作系统 ---
+.idea/
+.vscode/
+*.swp
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# --- 本地测试产物 ---
+tmp/
+_test_output/
+
+# --- Inno Setup 生成文件 ---
+installer/version.iss
+installer/version_info.txt
+installer/output/
