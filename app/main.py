@@ -97,6 +97,7 @@ def _attach_console() -> bool:
 def _ensure_std_streams() -> None:
     """确保在 GUI 子系统下 ``sys.stdout`` / ``sys.stderr`` 可用。"""
 
+    _force_utf8_streams()
     if sys.stdout is not None and sys.stderr is not None:
         return
     # 1) 若进程已被重定向（管道/文件），直接复用继承来的标准句柄
@@ -114,6 +115,33 @@ def _ensure_std_streams() -> None:
         sys.stdout = open(os.devnull, "w", encoding="utf-8")  # noqa: SIM115
     if sys.stderr is None:
         sys.stderr = open(os.devnull, "w", encoding="utf-8")  # noqa: SIM115
+
+
+def _force_utf8_streams() -> None:
+    """把标准输出/错误流切换为 UTF-8，避免中文在管道与重定向时乱码。"""
+
+    for name in ("stdout", "stderr"):
+        stream = getattr(sys, name, None)
+        if stream is None:
+            continue
+        reconfigure = getattr(stream, "reconfigure", None)
+        if callable(reconfigure):
+            with contextlib.suppress(Exception):
+                reconfigure(encoding="utf-8", errors="replace")
+        elif getattr(stream, "encoding", "").lower() not in {"utf-8", "utf8"}:
+            with contextlib.suppress(Exception):
+                setattr(
+                    sys,
+                    name,
+                    open(  # noqa: SIM115 - 需要长期持有标准流句柄
+                        stream.fileno(),
+                        "w",
+                        encoding="utf-8",
+                        buffering=1,
+                        errors="replace",
+                        closefd=False,
+                    ),
+                )
 
 
 def _stream_from_std_handle(which: int):  # type: ignore[no-untyped-def]
