@@ -88,9 +88,7 @@ def main(argv: list[str] | None = None) -> int:
     for item in chain:
         changed = [
             line.split("\t")
-            for line in git(
-                "diff", "--name-status", str(item["parent"]), str(item["sha"])
-            )
+            for line in git("diff", "--name-status", str(item["parent"]), str(item["sha"]))
             .strip()
             .splitlines()
         ]
@@ -114,9 +112,7 @@ def main(argv: list[str] | None = None) -> int:
                 }
             )
         parent_tree = gh_api("GET", f"repos/{repo}/git/commits/{item['parent']}")["tree"]["sha"]
-        new_tree = gh_api(
-            "POST", f"repos/{repo}/git/trees", {"base_tree": parent_tree, "tree": entries}
-        )
+        new_tree = gh_api("POST", f"repos/{repo}/git/trees", {"base_tree": parent_tree, "tree": entries})
         if new_tree["sha"] != item["tree"]:
             raise SystemExit(f"tree 校验失败：{new_tree['sha']} != {item['tree']}")
         a_name, a_email, a_date = item["author"]  # type: ignore[misc]
