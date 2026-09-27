@@ -114,7 +114,12 @@ class TaskManager(QObject):
     def _on_started(self, task_id: str) -> None:
         self._emit_update(self._tasks.get(task_id))
 
-    def _on_progress(self, task_id: str, _info: object) -> None:
+    def _on_progress(self, task_id: str, info: object) -> None:
+        """转发任务进度：必须使用信号携带的快照，否则会丢失中间进度。"""
+
+        if isinstance(info, TaskInfo):
+            self.task_updated.emit(task_id, info)
+            return
         self._emit_update(self._tasks.get(task_id))
 
     def _on_message(self, task_id: str, message: str) -> None:
